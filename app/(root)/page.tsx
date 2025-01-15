@@ -3,7 +3,6 @@ import BookOverview from "@/components/BookOverview";
 import { sampleBooks } from "@/constants";
 
 export default function Home() {
-  console.log(sampleBooks[0]);
   return (
     <>
       <BookOverview {...sampleBooks[0]} />
