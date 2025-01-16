@@ -81,6 +81,9 @@ export const signUp = async (params: AuthCredentials) => {
           email,
           fullName,
         },
+        headers: {
+          Authorization: `Bearer ${config.env.upstash.qstashToken}`,
+        },
       });
     } catch (workflowError) {
       console.error("Workflow trigger error:", workflowError);
