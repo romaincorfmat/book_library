@@ -13,3 +13,23 @@ export interface Book {
   summary: string;
   isLoanedBook?: boolean;
 }
+
+export interface AuthCredentials {
+  fullName: string;
+  email: string;
+  password: string;
+  universityId: number;
+  universityCard: string;
+}
+
+// export interface User {
+//   id: string;
+//   fullName: string;
+//   email: string;
+//   universityId: string;
+//   universityCard: string;
+//   status: "PENDING" | "APPROVED" | "REJECTED" | null;
+//   role: "USER" | "ADMIN" | null;
+//   lastActivityDate: string | null;
+//   createdAt: Date | null;
+// }
