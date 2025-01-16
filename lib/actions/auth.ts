@@ -8,17 +8,18 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
+import config from "@/lib/config";
+import { workflowClient } from "@/lib/workflow";
 import { AuthCredentials } from "@/types";
 
 import ratelimit from "../ratelimit";
 
 export const signInWithCredentials = async (
-  params: Pick<AuthCredentials, "email" | "password">
+  params: Pick<AuthCredentials, "email" | "password">,
 ) => {
   const { email, password } = params;
 
-  const ip =
-    (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
 
   const { success } = await ratelimit.limit(ip);
 
@@ -43,20 +44,13 @@ export const signInWithCredentials = async (
 };
 
 export const signUp = async (params: AuthCredentials) => {
-  const ip =
-    (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
 
   const { success } = await ratelimit.limit(ip);
 
   if (!success) return redirect("/too-fast");
 
-  const {
-    fullName,
-    email,
-    password,
-    universityId,
-    universityCard,
-  } = params;
+  const { fullName, email, password, universityId, universityCard } = params;
 
   // Check if the user already exists
   const existingUser = await db
@@ -78,6 +72,14 @@ export const signUp = async (params: AuthCredentials) => {
       universityId,
       password: hashedPassword,
       universityCard,
+    });
+
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
     });
 
     await signInWithCredentials({ email, password });
