@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  IKImage,
-  ImageKitProvider,
-  IKUpload,
-} from "imagekitio-next";
+import { IKImage, ImageKitProvider, IKUpload } from "imagekitio-next";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 
@@ -13,15 +9,13 @@ import config from "@/lib/config";
 
 const authenticator = async () => {
   try {
-    const response = await fetch(
-      `${config.env.apiEndpoint}/api/auth/imagekit`
-    );
+    const response = await fetch(`${config.env.apiEndpoint}/api/auth/imagekit`);
 
     if (!response.ok) {
       const errorText = await response.text();
 
       throw new Error(
-        `Request failed with status ${response.status}: ${errorText}`
+        `Request failed with status ${response.status}: ${errorText}`,
       );
     }
 
@@ -35,9 +29,7 @@ const authenticator = async () => {
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
-      throw new Error(
-        `Authentication request failed : ${error.message}`
-      );
+      throw new Error(`Authentication request failed : ${error.message}`);
     } else {
       throw new Error("Authentication request failed");
     }
@@ -57,15 +49,13 @@ const ImageUpload = ({
 }) => {
   const { toast } = useToast();
   const ikUploadRef = useRef(null);
-  const [file, setFile] = useState<{ filePath: string } | null>(
-    null
-  );
+  const [file, setFile] = useState<{ filePath: string } | null>(null);
 
   const onError = (error: unknown) => {
     console.error("Upload failed", error);
     toast({
       title: "Fail to upload file ",
-      description: `Your image could not be uploaded. Pleas try again.`,
+      description: `Your image could not be uploaded. Please try again.`,
     });
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +72,8 @@ const ImageUpload = ({
     <ImageKitProvider
       publicKey={publicKey}
       urlEndpoint={urlEndpoint}
-      authenticator={authenticator}>
+      authenticator={authenticator}
+    >
       <IKUpload
         ref={ikUploadRef}
         className="hidden"
@@ -98,7 +89,8 @@ const ImageUpload = ({
             // @ts-expect-error - ikUploadRef is not null
             ikUploadRef.current?.click();
           }
-        }}>
+        }}
+      >
         <Image
           src="/icons/upload.svg"
           alt="upload icon"
@@ -107,9 +99,7 @@ const ImageUpload = ({
           className="object-contain"
         />
         <p className="text-base text-light-100">Upload a file</p>
-        {file && (
-          <p className="upload-filename">{file.filePath}</p>
-        )}
+        {file && <p className="upload-filename">{file.filePath}</p>}
       </button>
       {file && (
         <IKImage
