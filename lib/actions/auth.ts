@@ -74,28 +74,28 @@ export const signUp = async (params: AuthCredentials) => {
       universityCard,
     });
 
-    try {
-      await workflowClient.trigger({
-        url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
-        body: {
-          email,
-          fullName,
-        },
-        headers: {
-          Authorization: `Bearer ${config.env.upstash.qstashToken}`,
-        },
-      });
-    } catch (workflowError) {
-      console.error("Workflow trigger error:", workflowError);
-      return { success: false, error: "Workflow trigger error" };
-    }
-    // await workflowClient.trigger({
-    //   url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
-    //   body: {
-    //     email,
-    //     fullName,
-    //   },
-    // });
+    // try {
+    //   await workflowClient.trigger({
+    //     url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+    //     body: {
+    //       email,
+    //       fullName,
+    //     },
+    //     headers: {
+    //       Authorization: `Bearer ${config.env.upstash.qstashToken}`,
+    //     },
+    //   });
+    // } catch (workflowError) {
+    //   console.error("Workflow trigger error:", workflowError);
+    //   return { success: false, error: "Workflow trigger error" };
+    // }
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
+    });
 
     await signInWithCredentials({ email, password });
 
