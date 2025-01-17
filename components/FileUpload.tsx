@@ -48,6 +48,7 @@ interface Props {
   accept: string;
   placeholder: string;
   folder: string;
+  value?: string;
   variant: "dark" | "light";
   onFileChange: (filePath: string) => void;
 }
@@ -59,10 +60,13 @@ const FileUpload = ({
   folder,
   variant,
   onFileChange,
+  value,
 }: Props) => {
   const { toast } = useToast();
   const ikUploadRef = useRef(null);
-  const [file, setFile] = useState<{ filePath: string } | null>(null);
+  const [file, setFile] = useState<{ filePath: string | null }>({
+    filePath: value ?? null,
+  });
   const [progress, setProgress] = useState(0);
 
   const styles = {
@@ -171,14 +175,14 @@ const FileUpload = ({
       {file &&
         (type === "image" ? (
           <IKImage
-            alt={file.filePath}
-            path={file.filePath}
+            alt={file.filePath || "uploaded image"}
+            path={file.filePath || undefined}
             width={500}
             height={500}
           />
         ) : type === "video" ? (
           <IKVideo
-            path={file.filePath}
+            path={file.filePath || undefined}
             controls={true}
             className="h-96 w-full rounded-xl"
           />

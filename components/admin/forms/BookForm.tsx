@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { z } from "zod";
 
+import ColorPicker from "@/components/admin/ColorPicker";
 import FileUpload from "@/components/FileUpload";
 import { Button } from "@/components/ui/button";
 import {
@@ -189,7 +190,12 @@ const BookForm = ({ type, ...book }: Props) => {
               <FormLabel className="text-base font-normal text-dark-500">
                 Primary Color
               </FormLabel>
-              <FormControl>{/*  TODO: File Color Picker */}</FormControl>
+              <FormControl>
+                <ColorPicker
+                  onPickerChange={field.onChange}
+                  value={field.value}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
