@@ -28,14 +28,12 @@ import { Input } from "@/components/ui/input";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { toast } from "@/hooks/use-toast";
 
-import ImageUpload from "./ImageUpload";
+import FileUpload from "./FileUpload";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
-  onSubmit: (
-    data: T
-  ) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (data: T) => Promise<{ success: boolean; error?: string }>;
   type: "SIGN_IN" | "SIGN_UP";
 }
 
@@ -76,9 +74,7 @@ const AuthForm = <T extends FieldValues>({
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold text-white">
-        {isSignIn
-          ? "Welcome back to BookWise"
-          : "Create your library account"}
+        {isSignIn ? "Welcome back to BookWise" : "Create your library account"}
       </h1>
       <p className="text-light-100">
         {isSignIn
@@ -88,7 +84,8 @@ const AuthForm = <T extends FieldValues>({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="space-y-6 w-full">
+          className="space-y-6 w-full"
+        >
           {Object.keys(defaultValues).map((field) => (
             <FormField
               key={field}
@@ -97,24 +94,23 @@ const AuthForm = <T extends FieldValues>({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="capitalize">
-                    {
-                      FIELD_NAMES[
-                        field.name as keyof typeof FIELD_NAMES
-                      ]
-                    }
+                    {FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload
+                      <FileUpload
+                        type={"image"}
+                        accept="image/*"
+                        placeholder="Upload Your University Card"
+                        folder="ids"
                         onFileChange={field.onChange}
+                        variant="dark"
                       />
                     ) : (
                       <Input
                         required
                         type={
-                          FIELD_TYPES[
-                            field.name as keyof typeof FIELD_TYPES
-                          ]
+                          FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]
                         }
                         {...field}
                         className="form-input"
@@ -127,20 +123,17 @@ const AuthForm = <T extends FieldValues>({
             />
           ))}
 
-          <Button
-            type="submit"
-            className="form-btn">
+          <Button type="submit" className="form-btn">
             {isSignIn ? "Sign In" : "Sign Up"}
           </Button>
         </form>
       </Form>
       <p className="text-center text-base font-medium">
-        {isSignIn
-          ? "New to BoookWise"
-          : "Already have an account ?"}{" "}
+        {isSignIn ? "New to BoookWise" : "Already have an account ?"}{" "}
         <Link
           href={isSignIn ? "/sign-up" : "/sign-in"}
-          className="font-bold text-primary">
+          className="font-bold text-primary"
+        >
           {isSignIn ? "Create an account" : "Sign in"}
         </Link>
       </p>
