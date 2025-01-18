@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React from "react";
 import {
   useForm,
@@ -22,6 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import { createBook } from "@/lib/admin/actions/book";
 import { bookSchema } from "@/lib/validation";
 import { Book } from "@/types";
 
@@ -30,6 +33,7 @@ interface Props extends Partial<Book> {
 }
 
 const BookForm = ({ type, ...book }: Props) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof bookSchema>>({
     resolver: zodResolver(bookSchema),
     defaultValues: {
@@ -47,7 +51,22 @@ const BookForm = ({ type, ...book }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
-    console.log(values);
+    const result = await createBook(values);
+
+    if (result.success) {
+      toast({
+        title: "Book added successfully",
+        description: "The book has been added to the library",
+      });
+
+      router.push(`/admin/books/${result.data.id}`);
+    } else {
+      toast({
+        title: "Error while adding new book to library",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
