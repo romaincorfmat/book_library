@@ -1,9 +1,7 @@
 import { desc } from "drizzle-orm";
 import React from "react";
 
-import { signOut } from "@/auth";
 import BookList from "@/components/BookList";
-import { Button } from "@/components/ui/button";
 import { db } from "@/database/drizzle";
 import { books } from "@/database/schema";
 import { Book } from "@/types";
