@@ -15,7 +15,7 @@ const BookCard = ({
   coverColor,
   coverUrl,
   //   TODO: Add isLoanedBook prop
-  // @ts-ignore
+  // @ts-expect-error isLoanedBook does not exist yet
   isLoanedBook = false,
 }: Book) => {
   return (

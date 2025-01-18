@@ -35,6 +35,11 @@ export interface BookParams {
   summary: string;
 }
 
+export interface BorrowBookParams {
+  bookId: string;
+  userId: string;
+}
+
 // export interface User {
 //   id: string;
 //   fullName: string;

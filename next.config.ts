@@ -17,12 +17,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  typescript:{
-    ignoreBuildErrors:true,
+  typescript: {
+    ignoreBuildErrors: false,
   },
-  eslint:{
-    ignoreDuringBuilds:true,
-  }
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
 };
 
 export default nextConfig;
