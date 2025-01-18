@@ -14,24 +14,18 @@ const BookCard = ({
   genre,
   coverColor,
   coverUrl,
+  //   TODO: Add isLoanedBook prop
+  // @ts-ignore
   isLoanedBook = false,
 }: Book) => {
   return (
     <li className={cn(isLoanedBook && "xs:w-52 w-full")}>
       <Link
         href={`/books/${id}`}
-        className={cn(
-          isLoanedBook && "w-full flex flex-col items-center"
-        )}>
-        <BookCover
-          coverColor={coverColor}
-          coverImage={coverUrl}
-        />
-        <div
-          className={cn(
-            "mt-4",
-            !isLoanedBook && "xs:max-w-40 max-w-28"
-          )}>
+        className={cn(isLoanedBook && "w-full flex flex-col items-center")}
+      >
+        <BookCover coverColor={coverColor} coverImage={coverUrl} />
+        <div className={cn("mt-4", !isLoanedBook && "xs:max-w-40 max-w-28")}>
           <p className="book-title">{title}</p>
           <p className="book-genre">{genre}</p>
         </div>
@@ -47,13 +41,9 @@ const BookCard = ({
                 height={18}
                 className="object-contain"
               />
-              <p className="text-light-100">
-                11 days left to return
-              </p>
+              <p className="text-light-100">11 days left to return</p>
             </div>
-            <Button
-              variant={"none"}
-              className="book-btn">
+            <Button variant={"none"} className="book-btn">
               Download receipt
             </Button>
           </div>
